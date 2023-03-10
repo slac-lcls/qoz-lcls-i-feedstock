@@ -1,17 +1,21 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 030cacc..34e9bf9 100644
+index 8f08865..43b642b 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -30,7 +30,7 @@ target_compile_features(${PROJECT_NAME}
+@@ -32,9 +32,9 @@ target_include_directories(
+ target_compile_features(${PROJECT_NAME}
      INTERFACE cxx_std_17
    )
- 
+-target_link_libraries(${PROJECT_NAME} INTERFACE pybind11::embed)
+-target_link_libraries(${PROJECT_NAME} INTERFACE pybind11::module)
 -target_link_libraries(${PROJECT_NAME} INTERFACE OpenMP::OpenMP_CXX)
++target_link_libraries(${PROJECT_NAME} INTERFACE pybind11::embed rt)
++target_link_libraries(${PROJECT_NAME} INTERFACE pybind11::module rt)
 +target_link_libraries(${PROJECT_NAME} INTERFACE OpenMP::OpenMP_CXX rt)
  
  option(QoZ_USE_BUNDLED_ZSTD "prefer the bundled version of Zstd" OFF)
  option(QoZ_DEBUG_TIMINGS "print debug timing information" ON)
-@@ -44,11 +44,11 @@ endif()
+@@ -48,17 +48,17 @@ endif()
  pkg_search_module(ZSTD IMPORTED_TARGET libzstd)
  if(ZSTD_FOUND AND NOT QoZ_USE_BUNDLED_ZSTD)
    message("Zstd found.")
@@ -25,3 +29,11 @@ index 030cacc..34e9bf9 100644
  endif()
  
  find_package(GSL)
+ if (GSL_FOUND)
+   message("GSL found.")
+-  target_link_libraries(${PROJECT_NAME} INTERFACE GSL::gsl)
++  target_link_libraries(${PROJECT_NAME} INTERFACE GSL::gsl rt)
+   target_compile_definitions(${PROJECT_NAME} INTERFACE -DENABLE_GSL="TRUE")
+ else()
+   message("GSL not found.")
+
